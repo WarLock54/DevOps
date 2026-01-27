@@ -1,14 +1,14 @@
 # Resource Group
 resource "azurerm_resource_group" "rg" {
   name     = var.resource_group_name
-  location = "East US"
+  location = var.location
   tags     = var.tags
 }
 
 # Virtual Network
 resource "azurerm_virtual_network" "vnet" {
   name                = var.vnet_name
-  address_space       = ["10.0.0.0/16"]
+  address_space       = var.vnet_address_space
   location            = azurerm_resource_group.rg.location
   resource_group_name = azurerm_resource_group.rg.name
   tags                = var.tags
@@ -19,7 +19,7 @@ resource "azurerm_subnet" "subnet" {
   name                 = var.subnet_name
   resource_group_name  = azurerm_resource_group.rg.name
   virtual_network_name = azurerm_virtual_network.vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+  address_prefixes     = var.subnet_address_prefixes
 }
 
 # Public IP
@@ -44,14 +44,14 @@ resource "azurerm_network_security_group" "nsg" {
 
 # Standalone NSG Rule: SSH
 resource "azurerm_network_security_rule" "ssh" {
-  name                        = var.ssh_rule_name
+  name                        = var.http_rule_name
   priority                    = 1001
   direction                   = "Inbound"
   access                      = "Allow"
-  protocol                    = "Tcp"
+  protocol                    = var.protocol_tcp
   source_port_range           = "*"
   destination_port_range      = "22"
-  source_address_prefix       = "*"
+  source_address_prefix       = var.source_address_all
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
@@ -59,15 +59,15 @@ resource "azurerm_network_security_rule" "ssh" {
 
 # Standalone NSG Rule: HTTP
 resource "azurerm_network_security_rule" "http" {
-  name                        = var.ssh_rule_name
+  name                        = var.http_rule_name
   priority                    = 1002
   direction                   = "Inbound"
   access                      = "Allow"
-  protocol                    = "Tcp"
+  protocol                    = var.protocol_tcp
   source_port_range           = "*"
   destination_port_range      = "80"
-  source_address_prefix       = "*"
-  destination_address_prefix  = "*"
+  source_address_prefix       = var.source_address_all
+  destination_address_prefix  = var.source_address_all
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
@@ -80,9 +80,9 @@ resource "azurerm_network_interface" "nic" {
   tags                = var.tags
 
   ip_configuration {
-    name                          = "internal"
+    name                          = var.ip_config_name
     subnet_id                     = azurerm_subnet.subnet.id
-    private_ip_address_allocation = "Dynamic"
+    private_ip_address_allocation = var.ip_allocation_type
     public_ip_address_id          = azurerm_public_ip.pip.id
   }
 }
@@ -98,8 +98,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
   name                            = var.vm_name
   resource_group_name             = azurerm_resource_group.rg.name
   location                        = azurerm_resource_group.rg.location
-  size                            = "Standard_B2s_v2"
-  admin_username                  = "azureuser"
+  size                            = var.vm_size
+  admin_username                  = var.admin_username
   admin_password                  = var.vm_password
   disable_password_authentication = false
   network_interface_ids           = [azurerm_network_interface.nic.id]
