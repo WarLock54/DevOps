@@ -91,6 +91,7 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_interface_security_group_association" "nic_nsg" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
+  depends_on                = [azurerm_network_security_rule.ssh, azurerm_network_security_rule.http]
 }
 
 # Linux VM
@@ -117,20 +118,12 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  # Provisioner to install Nginx
-  provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl enable nginx"
-    ]
-
-    connection {
-      type     = "ssh"
-      user     = self.admin_username
-      password = self.admin_password
-      host     = self.public_ip_address
-    }
-  }
+  user_data = base64encode(<<-EOF
+              #!/bin/bash
+              apt-get update
+              apt-get install -y nginx
+              systemctl start nginx
+              systemctl enable nginx
+              EOF
+  )
 }
