@@ -23,7 +23,6 @@ resource "azurerm_subnet" "subnet" {
 }
 
 # Public IP
-# Public IP (SKU Standard olarak güncellendi)
 resource "azurerm_public_ip" "pip" {
   name                = var.pip_name
   location            = azurerm_resource_group.rg.location
@@ -91,7 +90,6 @@ resource "azurerm_network_interface" "nic" {
 resource "azurerm_network_interface_security_group_association" "nic_nsg" {
   network_interface_id      = azurerm_network_interface.nic.id
   network_security_group_id = azurerm_network_security_group.nsg.id
-  depends_on                = [azurerm_network_security_rule.ssh, azurerm_network_security_rule.http]
 }
 
 # Linux VM
@@ -132,6 +130,7 @@ resource "azurerm_linux_virtual_machine" "vm" {
       user     = self.admin_username
       password = self.admin_password
       host     = self.public_ip_address
+      timeout  = "5m"
     }
   }
 }

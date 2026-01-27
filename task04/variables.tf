@@ -1,88 +1,105 @@
 variable "resource_group_name" {
   type        = string
-  description = "The name of the resource group"
+  description = "RG Name"
 }
+
 variable "location" {
   type        = string
-  description = "The Azure region"
+  description = "Azure Region"
 }
+
 variable "vnet_name" {
   type        = string
-  description = "The name of the VNet"
+  description = "VNet Name"
 }
+
 variable "vnet_address_space" {
   type        = list(string)
-  description = "Address space for VNet"
+  description = "VNet CIDR"
 }
+
 variable "subnet_name" {
   type        = string
-  description = "The name of the subnet"
+  description = "Subnet Name"
 }
+
 variable "subnet_address_prefixes" {
   type        = list(string)
-  description = "Address prefix for subnet"
+  description = "Subnet CIDR"
 }
+
 variable "pip_name" {
   type        = string
-  description = "Public IP name"
+  description = "Public IP Name"
 }
+
 variable "dns_label" {
   type        = string
-  description = "DNS label for PIP"
+  description = "DNS Label"
 }
+
 variable "nsg_name" {
   type        = string
-  description = "NSG name"
+  description = "NSG Name"
 }
+
 variable "ssh_rule_name" {
   type        = string
-  description = "SSH rule name"
+  description = "SSH Rule Name"
 }
+
 variable "http_rule_name" {
   type        = string
-  description = "HTTP rule name"
+  description = "HTTP Rule Name"
 }
+
 variable "nic_name" {
   type        = string
-  description = "NIC name"
+  description = "NIC Name"
 }
+
 variable "ip_config_name" {
   type        = string
-  description = "IP config name"
+  description = "IP Config Name"
 }
+
 variable "ip_allocation_type" {
   type        = string
-  description = "IP allocation method"
+  description = "Dynamic/Static"
 }
+
 variable "vm_name" {
   type        = string
-  description = "VM name"
+  description = "VM Name"
 }
+
 variable "vm_size" {
   type        = string
-  description = "VM SKU size"
+  description = "VM Size SKU"
 }
+
 variable "admin_username" {
   type        = string
-  description = "Admin user for VM"
+  description = "Admin User"
 }
+
 variable "vm_password" {
   type        = string
-  description = "Admin password"
+  description = "Admin Password"
   sensitive   = true
 }
-variable "tags" {
-  type        = map(string)
-  description = "Resource tags"
-}
+
 variable "protocol_tcp" {
   type        = string
-  description = "TCP protocol"
-  default     = "Tcp"
+  description = "TCP Protocol"
 }
 
 variable "source_address_all" {
   type        = string
-  description = "Source address prefix for all traffic"
-  default     = "*"
+  description = "Any IP (*)"
+}
+
+variable "tags" {
+  type        = map(string)
+  description = "Resource Tags"
 }
