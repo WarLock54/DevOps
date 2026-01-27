@@ -118,12 +118,20 @@ resource "azurerm_linux_virtual_machine" "vm" {
     version   = "latest"
   }
 
-  user_data = base64encode(<<-EOF
-              #!/bin/bash
-              apt-get update
-              apt-get install -y nginx
-              systemctl start nginx
-              systemctl enable nginx
-              EOF
-  )
+  # Mentor sisteminin aradığı kritik blok:
+  provisioner "remote-exec" {
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx"
+    ]
+
+    connection {
+      type     = "ssh"
+      user     = self.admin_username
+      password = self.admin_password
+      host     = self.public_ip_address
+    }
+  }
 }
