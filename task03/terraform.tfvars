@@ -1,0 +1,7 @@
+rg_name             = "cmaz-12nxowyz-mod3-rg"
+location            = "East US"
+storageaccount_name = "cmaz12nxowyzsa"
+vnet_name           = "cmaz-12nxowyz-mod3-vnet"
+subnet1_name        = "frontend"
+subnet2_name        = "backend"
+student_email       = "onur_atalik@epam.com"
