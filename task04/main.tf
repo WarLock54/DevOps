@@ -44,15 +44,15 @@ resource "azurerm_network_security_group" "nsg" {
 
 # Standalone NSG Rule: SSH
 resource "azurerm_network_security_rule" "ssh" {
-  name                        = var.http_rule_name
+  name                        = var.ssh_rule_name
   priority                    = 1001
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = var.protocol_tcp
-  source_port_range           = "*"
+  source_port_range           = var.source_address_all
   destination_port_range      = "22"
   source_address_prefix       = var.source_address_all
-  destination_address_prefix  = "*"
+  destination_address_prefix  = var.source_address_all
   resource_group_name         = azurerm_resource_group.rg.name
   network_security_group_name = azurerm_network_security_group.nsg.name
 }
@@ -64,7 +64,7 @@ resource "azurerm_network_security_rule" "http" {
   direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = var.protocol_tcp
-  source_port_range           = "*"
+  source_port_range           = var.source_address_all
   destination_port_range      = "80"
   source_address_prefix       = var.source_address_all
   destination_address_prefix  = var.source_address_all
