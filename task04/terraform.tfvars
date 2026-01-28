@@ -20,3 +20,4 @@ tags = {
 }
 protocol_tcp       = "Tcp"
 source_address_all = "*"
+vm_password = "OnurAtaTurkey2026!"
