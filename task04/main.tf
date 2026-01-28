@@ -120,19 +120,19 @@ resource "azurerm_linux_virtual_machine" "vm" {
   provisioner "remote-exec" {
     on_failure = continue
 
-  inline = [
-    "sudo apt-get update",
-    "sudo apt-get install -y nginx",
-    "sudo systemctl start nginx",
-    "sudo systemctl enable nginx"
-  ]
+    inline = [
+      "sudo apt-get update",
+      "sudo apt-get install -y nginx",
+      "sudo systemctl start nginx",
+      "sudo systemctl enable nginx"
+    ]
 
-  connection {
-    type     = "ssh"
-    user     = self.admin_username
-    password = self.admin_password
-    host     = self.public_ip_address
-    timeout  = "5m"
-  }
+    connection {
+      type     = "ssh"
+      user     = self.admin_username
+      password = self.admin_password
+      host     = self.public_ip_address
+      timeout  = "5m"
+    }
   }
 }
