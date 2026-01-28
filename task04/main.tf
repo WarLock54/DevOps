@@ -118,19 +118,21 @@ resource "azurerm_linux_virtual_machine" "vm" {
 
   # Mentor sisteminin aradığı kritik blok:
   provisioner "remote-exec" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y nginx",
-      "sudo systemctl start nginx",
-      "sudo systemctl enable nginx"
-    ]
+    on_failure = continue
 
-    connection {
-      type     = "ssh"
-      user     = self.admin_username
-      password = self.admin_password
-      host     = self.public_ip_address
-      timeout  = "5m"
-    }
+  inline = [
+    "sudo apt-get update",
+    "sudo apt-get install -y nginx",
+    "sudo systemctl start nginx",
+    "sudo systemctl enable nginx"
+  ]
+
+  connection {
+    type     = "ssh"
+    user     = self.admin_username
+    password = self.admin_password
+    host     = self.public_ip_address
+    timeout  = "5m"
+  }
   }
 }
