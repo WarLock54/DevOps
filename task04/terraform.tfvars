@@ -1,5 +1,5 @@
 resource_group_name     = "cmaz-12nxowyz-mod4-rg"
-location                = "East US"
+location                = "swedencentral"
 vnet_name               = "cmaz-12nxowyz-mod4-vnet"
 vnet_address_space      = ["10.0.0.0/16"]
 subnet_name             = "frontend"
@@ -20,4 +20,3 @@ tags = {
 }
 protocol_tcp       = "Tcp"
 source_address_all = "*"
-vm_password        = "OnurAtaTurkey2026!"

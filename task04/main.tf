@@ -121,8 +121,8 @@ resource "azurerm_linux_virtual_machine" "vm" {
     on_failure = continue
 
     inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y nginx",
+      "sudo apt-get update -y",
+      "sudo DEBIAN_FRONTEND=noninteractive apt-get install -y nginx",
       "sudo systemctl start nginx",
       "sudo systemctl enable nginx"
     ]
