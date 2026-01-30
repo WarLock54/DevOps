@@ -7,7 +7,7 @@ resource "azurerm_windows_web_app" "app" {
 
   site_config {
     ip_restriction_default_action = "Deny"
-    
+
     dynamic "ip_restriction" {
       for_each = var.ip_restrictions
       content {

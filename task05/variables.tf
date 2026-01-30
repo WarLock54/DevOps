@@ -4,7 +4,6 @@ variable "resource_groups" {
     location = string
   }))
 }
-
 variable "app_configs" {
   type = map(object({
     asp_name     = string
@@ -15,6 +14,15 @@ variable "app_configs" {
   }))
 }
 
-variable "tm_name" { type = string }
-variable "verification_ip" { type = string }
-variable "common_tags" { type = map(string) }
+variable "tm_name" {
+  type        = string
+  description = "The name of the Traffic Manager profile"
+}
+variable "verification_ip" {
+  type        = string
+  description = "The IP address used for endpoint verification"
+}
+variable "common_tags" {
+  type        = map(string)
+  description = "Common tags to be applied to all resources"
+}
