@@ -3,6 +3,7 @@ variable "resource_groups" {
     name     = string
     location = string
   }))
+  description = "A map of resource group objects containing names and locations"
 }
 variable "app_configs" {
   type = map(object({
@@ -12,6 +13,7 @@ variable "app_configs" {
     app_name     = string
     rg_key       = string
   }))
+  description = "Configuration details for App Service Plans and Windows Web Apps"
 }
 
 variable "tm_name" {
@@ -25,4 +27,18 @@ variable "verification_ip" {
 variable "common_tags" {
   type        = map(string)
   description = "Common tags to be applied to all resources"
+}
+variable "ip_rule_name" {
+  type        = string
+  description = "Access restriction allow IP rule name"
+}
+
+variable "tm_service_tag_rule_name" {
+  type        = string
+  description = "Access restriction allow TM service tag rule name"
+}
+
+variable "tm_routing_method" {
+  type        = string
+  description = "Traffic Manager routing method"
 }

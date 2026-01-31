@@ -21,6 +21,9 @@ app_configs = {
   }
 }
 
-tm_name         = "cmaz-12nxowyz-mod5-traf"
-verification_ip = "18.153.146.156"
-common_tags     = { Creator = "onur_atalik@epam.com" }
+tm_name                  = "cmaz-12nxowyz-mod5-traf"
+verification_ip          = "18.153.146.156"
+common_tags              = { Creator = "onur_atalik@epam.com" }
+ip_rule_name             = "allow-ip"
+tm_service_tag_rule_name = "allow-tm"
+tm_routing_method        = "Performance"

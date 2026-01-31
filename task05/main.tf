@@ -28,12 +28,12 @@ module "web_apps" {
 
   ip_restrictions = [
     {
-      name       = "allow-ip"
+      name       = var.ip_rule_name
       priority   = 100
       ip_address = "${var.verification_ip}/32"
     },
     {
-      name        = "allow-tm"
+      name        = var.tm_service_tag_rule_name
       priority    = 200
       service_tag = "AzureTrafficManager"
     }
@@ -44,7 +44,7 @@ module "traffic_manager" {
   source              = "./modules/traffic_manager"
   name                = var.tm_name
   resource_group_name = module.resource_groups["rg3"].name
-  routing_method      = "Performance"
+  routing_method      = var.tm_routing_method
   tags                = var.common_tags
 
   endpoints = {
