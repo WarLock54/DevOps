@@ -1,4 +1,5 @@
 locals {
+  name_prefix     = var.resources_name_prefix
   rg_name         = format("%s-rg", var.resources_name_prefix)
   sql_server_name = format("%s-sql", var.resources_name_prefix)
   sql_db_name     = format("%s-sql-db", var.resources_name_prefix)
