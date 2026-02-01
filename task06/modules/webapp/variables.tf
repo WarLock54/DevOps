@@ -24,8 +24,8 @@ variable "app_dotnet_version" {
 }
 variable "sql_connection_string" {
   type        = string
-  description = "The connection string for the SQL database."
   sensitive   = true
+  description = "The connection string for the SQL database."
 }
 variable "tags" {
   type        = map(string)

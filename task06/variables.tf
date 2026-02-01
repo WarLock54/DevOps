@@ -10,6 +10,10 @@ variable "kv_name" {
   type        = string
   description = "The name of the Key Vault"
 }
+variable "azurerm_key_vault_name" {
+  type        = string
+  description = "The existing Key Vault ID"
+}
 variable "resources_name_prefix" {
   type        = string
   description = "The prefix for naming resources"
