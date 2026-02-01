@@ -4,16 +4,8 @@ data "azurerm_key_vault" "existing" {
 }
 data "azurerm_client_config" "current" {}
 
-#Key Vault  Access Policy 
-resource "azurerm_key_vault_access_policy" "user_access" {
-  key_vault_id = data.azurerm_key_vault.existing.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = data.azurerm_client_config.current.object_id
+#Key Vault  Access Policy ?
 
-  secret_permissions = [
-    "Get", "List", "Set", "Delete", "Purge"
-  ]
-}
 resource "azurerm_resource_group" "main" {
   name     = local.rg_name
   location = var.location
@@ -34,7 +26,6 @@ module "sql" {
   allowed_ip_address        = var.allowed_ip_address
   sql_fwr_name              = var.sql_fwr_name
   tags                      = local.common_tags
-  depends_on                = [azurerm_key_vault_access_policy.user_access]
 }
 
 module "webapp" {
