@@ -1,0 +1,6 @@
+resource_group_name = "cmaz-12nxowyz-mod7-rg-70f5"
+location            = "francecentral"
+vm_name             = "cmaz-12nxowyz-mod7-vm"
+rsv_name            = "cmaz-12nxowyz-mod7-rsv"
+sa_name             = "cmaz12nxowyzmod7sa"
+sa_sku              = "Standard_LRS"

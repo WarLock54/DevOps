@@ -1,0 +1,10 @@
+variable "name" { description = "Redis instance name" }
+variable "location" { description = "Azure region" }
+variable "rg_name" { description = "Resource group name" }
+variable "capacity" { description = "Redis capacity" }
+variable "sku_family" { description = "Redis SKU family" }
+variable "sku" { description = "Redis SKU name" }
+variable "kv_id" { description = "Key Vault ID to store secrets" }
+variable "secret_name_hostname" { description = "Secret name for hostname" }
+variable "secret_name_key" { description = "Secret name for primary key" }
+variable "tags" { type = map(string) }
