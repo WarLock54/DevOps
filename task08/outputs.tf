@@ -1,5 +1,6 @@
 output "aci_fqdn" {
-  value = module.aci.fqdn
+  description = "Azure Container Instance uygulamasının tam nitelikli alan adı (FQDN)."
+  value       = module.aci.fqdn
 }
 
 data "kubernetes_service" "app" {
@@ -10,5 +11,6 @@ data "kubernetes_service" "app" {
 }
 
 output "aks_lb_ip" {
-  value = data.kubernetes_service.app.status[0].load_balancer[0].ingress[0].ip
+  description = "AKS üzerinde çalışan uygulamanın dış dünyaya açık Public IP adresi."
+  value       = data.kubernetes_service.app.status[0].load_balancer[0].ingress[0].ip
 }

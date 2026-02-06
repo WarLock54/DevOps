@@ -1,21 +1,27 @@
-resources_name_prefix = "task08"
-student_email         = "19240000033@ogrenci.ege.edu.tr"
-location              = "francecentral"
-# git_pat               = "plan/apply sırasında manuel girilecek"
-redis_capacity    = 1
-redis_sku         = "Standard"
+resources_name_prefix = "cmtr-12nxowyz-mod8" # Prefix olarak bunu kullanacağız
+student_email         = "onur_atalik@epam.com"
+
+# Redis
+redis_capacity    = 2
+redis_sku         = "Basic"
 redis_sku_family  = "C"
 redis_hostname    = "redis-hostname"
 redis_primary_key = "redis-primary-key"
 
+# Key Vault
 keyvault_sku = "standard"
 
-acr_sku    = "Standard"
-image_name = "flask-app"
+# ACR
+acr_sku    = "Basic"
+image_name = "cmtr-12nxowyz-mod8-app"
 
+# ACI
 aci_sku = "Standard"
 
-aks_node_pool_name      = "default"
+# AKS
+aks_node_pool_name      = "system"
 aks_node_pool_count     = 1
-aks_node_pool_size      = "Standard_DS2_v2"
+aks_node_pool_size      = "Standard_B2s"
 aks_node_pool_disk_type = "Managed"
+location                = "francecentral"
+git_pat                 = "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"

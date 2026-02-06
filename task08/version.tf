@@ -16,7 +16,23 @@ terraform {
   }
 }
 
-
 provider "azurerm" {
   features {}
+}
+
+# Kubernetes sağlayıcısını AKS verileriyle yapılandırın
+provider "kubernetes" {
+  host                   = module.aks.host
+  client_certificate     = base64decode(module.aks.client_certificate)
+  client_key             = base64decode(module.aks.client_key)
+  cluster_ca_certificate = base64decode(module.aks.cluster_ca_certificate)
+}
+
+# Kubectl sağlayıcısını AKS verileriyle yapılandırın
+provider "kubectl" {
+  host                   = module.aks.host
+  client_certificate     = base64decode(module.aks.client_certificate)
+  client_key             = base64decode(module.aks.client_key)
+  cluster_ca_certificate = base64decode(module.aks.cluster_ca_certificate)
+  load_config_file       = false
 }
