@@ -24,4 +24,3 @@ aks_node_pool_count     = 1
 aks_node_pool_size      = "Standard_B2s"
 aks_node_pool_disk_type = "Managed"
 location                = "francecentral"
-git_pat                 = "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"
