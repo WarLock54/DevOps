@@ -3,7 +3,7 @@ locals {
   redis_name    = "${var.resources_name_prefix}-redis"
   keyvault_name = "${var.resources_name_prefix}-kv"
 
-  acr_name = replace("${var.resources_name_prefix}cr", "-", "")
+  acr_name = "cmtr12nxowyzmod8cr"
 
   aks_name = "${var.resources_name_prefix}-aks"
 
