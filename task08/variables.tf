@@ -1,7 +1,7 @@
 variable "resource_group_location" {
   type        = string
   description = "Azure kaynaklarının konuşlandırılacağı bölge."
-  default     = "West Europe"
+  default     = "francecentral"
 }
 variable "common_tags" {
   type        = map(string)
@@ -9,6 +9,7 @@ variable "common_tags" {
   default     = {}
 }
 variable "location" {
+  type        = string
   description = "Tüm kaynaklara uygulanacak ortak konum etiketi."
 }
 variable "resources_name_prefix" {

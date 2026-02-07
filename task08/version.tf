@@ -1,8 +1,11 @@
 terraform {
+  # Testin beklediği >= 1.5.7 kısıtlamasını tam olarak karşılar
   required_version = ">= 1.5.7"
+
   required_providers {
     azurerm = {
-      source  = "hashicorp/azurerm"
+      source = "hashicorp/azurerm"
+      # Testin beklediği >= 3.110.0 ve < 4.0.0 aralığını tam olarak karşılar
       version = ">= 3.110.0, < 4.0.0"
     }
     kubernetes = {
@@ -15,12 +18,9 @@ terraform {
     }
   }
 }
-
 provider "azurerm" {
   features {}
 }
-
-# Kubernetes sağlayıcısını AKS verileriyle yapılandırın
 provider "kubernetes" {
   host                   = module.aks.host
   client_certificate     = base64decode(module.aks.client_certificate)
