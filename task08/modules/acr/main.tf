@@ -6,7 +6,7 @@ resource "azurerm_container_registry" "acr" {
   admin_enabled       = true
   tags                = var.tags
 }
-/*
+
 resource "azurerm_container_registry_task" "build_task" {
   name                  = "build_app"
   container_registry_id = azurerm_container_registry.acr.id
@@ -22,4 +22,4 @@ resource "azurerm_container_registry_task" "build_task" {
 
 resource "azurerm_container_registry_task_schedule_run_now" "trigger" {
   container_registry_task_id = azurerm_container_registry_task.build_task.id
-}*/
+}
