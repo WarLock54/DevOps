@@ -1,16 +1,14 @@
-# 1. Mevcut Resource Group'u Azure'dan çekiyoruz
-data "azurerm_resource_group" "main" {
-  name = var.resource_group_name
+resource "azurerm_resource_group" "main" {
+  name     = var.resource_group_name
+  location = var.location
+  tags     = local.common_tags
 }
-
-# 2. Tenant ve Object ID çekmek için config
 data "azurerm_client_config" "current" {}
-
 module "keyvault" {
   source          = "./modules/keyvault"
   name            = var.keyvault_name
-  rg_name         = data.azurerm_resource_group.main.name
-  location        = data.azurerm_resource_group.main.location
+  rg_name         = azurerm_resource_group.main.name
+  location        = azurerm_resource_group.main.location
   sku             = var.keyvault_sku
   tenant_id       = data.azurerm_client_config.current.tenant_id
   current_user_id = data.azurerm_client_config.current.object_id
@@ -20,8 +18,8 @@ module "keyvault" {
 module "redis" {
   source               = "./modules/redis"
   name                 = var.redis_name
-  rg_name              = data.azurerm_resource_group.main.name
-  location             = data.azurerm_resource_group.main.location
+  rg_name              = azurerm_resource_group.main.name
+  location             = azurerm_resource_group.main.location
   capacity             = var.redis_capacity
   sku_family           = var.redis_sku_family
   sku                  = var.redis_sku
@@ -34,8 +32,8 @@ module "redis" {
 module "acr" {
   source     = "./modules/acr"
   name       = var.acr_name
-  rg_name    = data.azurerm_resource_group.main.name
-  location   = data.azurerm_resource_group.main.location
+  rg_name    = azurerm_resource_group.main.name
+  location   = azurerm_resource_group.main.location
   sku        = var.acr_sku
   image_name = var.image_name
   git_pat    = var.git_pat
@@ -45,8 +43,8 @@ module "acr" {
 module "aks" {
   source              = "./modules/aks"
   name                = var.aks_name
-  rg_name             = data.azurerm_resource_group.main.name
-  location            = data.azurerm_resource_group.main.location
+  rg_name             = azurerm_resource_group.main.name
+  location            = azurerm_resource_group.main.location
   node_pool_name      = var.aks_node_pool_name
   node_pool_count     = var.aks_node_pool_count
   node_pool_size      = var.aks_node_pool_size
@@ -60,8 +58,8 @@ module "aks" {
 module "aci" {
   source            = "./modules/aci"
   name              = var.aci_name
-  rg_name           = data.azurerm_resource_group.main.name
-  location          = data.azurerm_resource_group.main.location
+  rg_name           = azurerm_resource_group.main.name
+  location          = azurerm_resource_group.main.location
   acr_login_server  = module.acr.login_server
   acr_username      = module.acr.admin_username
   acr_password      = module.acr.admin_password
