@@ -97,3 +97,27 @@ variable "aks_node_pool_disk_type" {
   type        = string
   description = "AKS node'ları için kullanılacak işletim sistemi disk tipi."
 }
+variable "resource_group_name" {
+  type        = string
+  description = "Oluşturulacak kaynak grubunun adı."
+}
+variable "redis_name" {
+  type        = string
+  description = "Oluşturulacak Redis Cache örneğinin adı."
+}
+variable "keyvault_name" {
+  type        = string
+  description = "Oluşturulacak Key Vault'un adı."
+}
+variable "acr_name" {
+  type        = string
+  description = "Oluşturulacak Azure Container Registry'nin adı."
+}
+variable "aci_name" {
+  type        = string
+  description = "Oluşturulacak Azure Container Instance'ın adı."
+}
+variable "aks_name" {
+  type        = string
+  description = "Oluşturulacak Azure Kubernetes Service kümesinin adı."
+}

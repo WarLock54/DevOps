@@ -1,17 +1,16 @@
-# Task gereği Tenant ve Object ID çekmek için zorunlu
-data "azurerm_client_config" "current" {}
-
-resource "azurerm_resource_group" "main" {
-  name     = local.rg_name
-  location = var.location
-  tags     = local.common_tags
+# 1. Mevcut Resource Group'u Azure'dan çekiyoruz
+data "azurerm_resource_group" "main" {
+  name = var.resource_group_name
 }
+
+# 2. Tenant ve Object ID çekmek için config
+data "azurerm_client_config" "current" {}
 
 module "keyvault" {
   source          = "./modules/keyvault"
-  name            = local.keyvault_name
-  rg_name         = azurerm_resource_group.main.name
-  location        = azurerm_resource_group.main.location
+  name            = var.keyvault_name
+  rg_name         = data.azurerm_resource_group.main.name
+  location        = data.azurerm_resource_group.main.location
   sku             = var.keyvault_sku
   tenant_id       = data.azurerm_client_config.current.tenant_id
   current_user_id = data.azurerm_client_config.current.object_id
@@ -20,9 +19,9 @@ module "keyvault" {
 
 module "redis" {
   source               = "./modules/redis"
-  name                 = local.redis_name
-  rg_name              = azurerm_resource_group.main.name
-  location             = azurerm_resource_group.main.location
+  name                 = var.redis_name
+  rg_name              = data.azurerm_resource_group.main.name
+  location             = data.azurerm_resource_group.main.location
   capacity             = var.redis_capacity
   sku_family           = var.redis_sku_family
   sku                  = var.redis_sku
@@ -32,24 +31,22 @@ module "redis" {
   tags                 = local.common_tags
 }
 
-# Task parametrelerindeki ACR Modülü
 module "acr" {
   source     = "./modules/acr"
-  name       = local.acr_name
-  rg_name    = azurerm_resource_group.main.name
-  location   = azurerm_resource_group.main.location
+  name       = var.acr_name
+  rg_name    = data.azurerm_resource_group.main.name
+  location   = data.azurerm_resource_group.main.location
   sku        = var.acr_sku
   image_name = var.image_name
   git_pat    = var.git_pat
   tags       = local.common_tags
 }
 
-# Task parametrelerindeki AKS Modülü
 module "aks" {
   source              = "./modules/aks"
-  name                = local.aks_name
-  rg_name             = azurerm_resource_group.main.name
-  location            = azurerm_resource_group.main.location
+  name                = var.aks_name
+  rg_name             = data.azurerm_resource_group.main.name
+  location            = data.azurerm_resource_group.main.location
   node_pool_name      = var.aks_node_pool_name
   node_pool_count     = var.aks_node_pool_count
   node_pool_size      = var.aks_node_pool_size
@@ -60,12 +57,11 @@ module "aks" {
   tags                = local.common_tags
 }
 
-# Task parametrelerindeki ACI Modülü
 module "aci" {
   source            = "./modules/aci"
-  name              = local.aci_name
-  rg_name           = azurerm_resource_group.main.name
-  location          = azurerm_resource_group.main.location
+  name              = var.aci_name
+  rg_name           = data.azurerm_resource_group.main.name
+  location          = data.azurerm_resource_group.main.location
   acr_login_server  = module.acr.login_server
   acr_username      = module.acr.admin_username
   acr_password      = module.acr.admin_password
@@ -76,10 +72,10 @@ module "aci" {
   depends_on        = [module.acr, module.redis]
 }
 
-# K8S Manifestleri (Task'ta belirtilen template ve kubectl kullanımı)
+# --- Kubernetes Manifestleri ---
+
 resource "kubectl_manifest" "secret_provider" {
   yaml_body = templatefile("${path.module}/k8s-manifests/secret-provider.yaml.tftpl", {
-    # Burası module.aks içindeki output ismiyle aynı olmalı
     aks_kv_access_identity_id  = module.aks.kubelet_identity_id
     kv_name                    = module.keyvault.name
     redis_url_secret_name      = var.redis_hostname
@@ -105,7 +101,7 @@ resource "kubectl_manifest" "deployment" {
 }
 
 resource "kubectl_manifest" "service" {
-  yaml_body = file("k8s-manifests/service.yaml")
+  yaml_body = file("${path.module}/k8s-manifests/service.yaml")
   wait_for {
     field {
       key        = "status.loadBalancer.ingress.[0].ip"
