@@ -33,3 +33,8 @@ variable "tags" {
   description = "Common tags applied to ACR"
   type        = map(string)
 }
+variable "enable_acr_task" {
+  type        = bool
+  default     = false # Varsayılan olarak kapalı, böylece apply hata vermez
+  description = "Abonelik kısıtlaması nedeniyle task oluşumunu kontrol eder"
+}
