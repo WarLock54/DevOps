@@ -2,6 +2,11 @@ variable "name" {
   description = "Azure Kubernetes Service cluster name"
   type        = string
 }
+variable "os_disk_size_gb" {
+  description = "OS disk size in GB for AKS nodes"
+  type        = number
+  default = 30
+}
 
 variable "location" {
   description = "Azure region for AKS"

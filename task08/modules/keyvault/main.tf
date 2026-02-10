@@ -5,12 +5,17 @@ resource "azurerm_key_vault" "kv" {
   tenant_id           = var.tenant_id
   sku_name            = var.sku
   tags                = var.tags
-}
+/*
+  access_policy {
+    tenant_id = var.tenant_id
+    object_id = var.current_user_id
 
+    secret_permissions = ["Get", "List", "Set", "Delete", "Purge", "Recover"]
+  }*/
+}
 resource "azurerm_key_vault_access_policy" "user_policy" {
   key_vault_id = azurerm_key_vault.kv.id
   tenant_id    = var.tenant_id
   object_id    = var.current_user_id
-
   secret_permissions = ["Get", "List", "Set", "Delete", "Purge", "Recover"]
 }

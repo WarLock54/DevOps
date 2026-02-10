@@ -8,7 +8,7 @@ resource "azurerm_container_group" "aci" {
   tags                = var.tags
 
   container {
-    name   = "flask-app"
+    name   = "web-app"
     image  = "${var.acr_login_server}/${var.image_name}:latest"
     cpu    = "0.5"
     memory = "1.5"

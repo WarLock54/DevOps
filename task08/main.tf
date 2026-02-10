@@ -6,7 +6,7 @@ resource "azurerm_resource_group" "main" {
 data "azurerm_client_config" "current" {}
 module "keyvault" {
   source          = "./modules/keyvault"
-  name            = var.keyvault_name
+  name            = "${var.keyvault_name}-${random_string.suffix.result}"
   rg_name         = azurerm_resource_group.main.name
   location        = azurerm_resource_group.main.location
   sku             = var.keyvault_sku
@@ -17,13 +17,14 @@ module "keyvault" {
 
 module "redis" {
   source               = "./modules/redis"
-  name                 = var.redis_name
+  name                 = "${var.redis_name}-${random_string.suffix.result}"
   rg_name              = azurerm_resource_group.main.name
   location             = azurerm_resource_group.main.location
   capacity             = var.redis_capacity
   sku_family           = var.redis_sku_family
   sku                  = var.redis_sku
   kv_id                = module.keyvault.id
+  policy_dependency    = module.keyvault.user_policy_id
   secret_name_hostname = var.redis_hostname
   secret_name_key      = var.redis_primary_key
   tags                 = local.common_tags
@@ -31,7 +32,7 @@ module "redis" {
 
 module "acr" {
   source     = "./modules/acr"
-  name       = var.acr_name
+  name       = replace("${var.acr_name}${random_string.suffix.result}", "-", "")
   rg_name    = azurerm_resource_group.main.name
   location   = azurerm_resource_group.main.location
   sku        = var.acr_sku
@@ -42,7 +43,7 @@ module "acr" {
 
 module "aks" {
   source              = "./modules/aks"
-  name                = var.aks_name
+  name                = "${var.aks_name}-${random_string.suffix.result}"
   rg_name             = azurerm_resource_group.main.name
   location            = azurerm_resource_group.main.location
   node_pool_name      = var.aks_node_pool_name
@@ -53,11 +54,14 @@ module "aks" {
   kv_id               = module.keyvault.id
   tenant_id           = data.azurerm_client_config.current.tenant_id
   tags                = local.common_tags
+  os_disk_size_gb     = 30
+  depends_on          = [module.keyvault]
+
 }
 
 module "aci" {
   source            = "./modules/aci"
-  name              = var.aci_name
+  name              = "${var.aci_name}-${random_string.suffix.result}"
   rg_name           = azurerm_resource_group.main.name
   location          = azurerm_resource_group.main.location
   acr_login_server  = module.acr.login_server
@@ -67,7 +71,7 @@ module "aci" {
   redis_hostname    = module.redis.hostname
   redis_primary_key = module.redis.primary_key
   tags              = local.common_tags
-  depends_on        = [module.acr, module.redis]
+  depends_on        = [module.acr, module.redis, module.keyvault]
 }
 
 # --- Kubernetes Manifestleri ---
@@ -80,7 +84,7 @@ resource "kubectl_manifest" "secret_provider" {
     redis_password_secret_name = var.redis_primary_key
     tenant_id                  = data.azurerm_client_config.current.tenant_id
   })
-  depends_on = [module.aks, module.redis]
+  depends_on = [module.aks, module.keyvault, module.redis]
 }
 
 resource "kubectl_manifest" "deployment" {
@@ -95,7 +99,7 @@ resource "kubectl_manifest" "deployment" {
       value = "1"
     }
   }
-  depends_on = [kubectl_manifest.secret_provider]
+  depends_on = [kubectl_manifest.secret_provider, module.acr, module.aks]
 }
 
 resource "kubectl_manifest" "service" {
@@ -108,4 +112,10 @@ resource "kubectl_manifest" "service" {
     }
   }
   depends_on = [kubectl_manifest.deployment]
+}
+
+resource "random_string" "suffix" {
+  length  = 6
+  special = false
+  upper   = false
 }

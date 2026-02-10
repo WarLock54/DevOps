@@ -7,24 +7,20 @@ resource "azurerm_container_registry" "acr" {
   tags                = var.tags
 }
 resource "azurerm_container_registry_task" "build_task" {
-  count                 = 1
   name                  = "build_app"
   container_registry_id = azurerm_container_registry.acr.id
-  platform {
-    os = "Linux"
-  }
+  platform { os = "Linux" }
 
   docker_step {
     dockerfile_path      = "task08/application/Dockerfile"
-    context_path         = "https://github.com/WarLock54/DevOps"
+    context_path         = "https://github.com/WarLock54/DevOps#main" # Kendi reponuz
     context_access_token = var.git_pat
     image_names          = ["${var.image_name}:latest"]
   }
 }
 
 resource "azurerm_container_registry_task_schedule_run_now" "trigger" {
-  count                      = 1
-  container_registry_task_id = azurerm_container_registry_task.build_task[0].id
+  container_registry_task_id = azurerm_container_registry_task.build_task.id
 }
 /*
 resource "azurerm_container_registry_task" "build_task" {

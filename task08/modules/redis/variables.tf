@@ -38,3 +38,7 @@ variable "tags" {
   type        = map(string)
   description = "Common tags"
 }
+variable "policy_dependency" {
+  type    = any
+  default = null
+}
