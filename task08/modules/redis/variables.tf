@@ -39,6 +39,7 @@ variable "tags" {
   description = "Common tags"
 }
 variable "policy_dependency" {
-  type    = any
-  default = null
+  type        = any
+  default     = null
+  description = "policy dependency"
 }
