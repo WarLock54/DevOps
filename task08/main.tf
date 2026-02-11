@@ -4,6 +4,11 @@ resource "azurerm_resource_group" "main" {
   tags     = local.common_tags
 }
 data "azurerm_client_config" "current" {}
+resource "random_string" "suffix" {
+  length  = 4
+  special = false
+  upper   = false
+}
 module "keyvault" {
   source          = "./modules/keyvault"
   name            = local.keyvault_name

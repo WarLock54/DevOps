@@ -22,7 +22,7 @@ aks_node_pool_name      = "system"
 aks_node_pool_count     = 1
 aks_node_pool_size      = "Standard_B2ms"
 aks_node_pool_disk_type = "Managed"
-location                = "swedencentral"
+location                = "germanywestcentral"
 aks_name                = "cmtr-12nxowyz-mod8-aks"
 
 resource_group_name = "cmtr-12nxowyz-mod8-rg"
