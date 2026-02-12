@@ -20,9 +20,9 @@ aci_name = "cmtr-12nxowyz-mod8-ci"
 # AKS
 aks_node_pool_name      = "systempool"
 aks_node_pool_count     = 1
-aks_node_pool_size      = "Standard_A2_v2"
+aks_node_pool_size      = "standard_d2s_v6"
 aks_node_pool_disk_type = "Managed"
-location                = "germanywestcentral"
+location                = "francecentral"
 aks_name                = "cmtr-12nxowyz-mod8-aks"
 
 resource_group_name = "cmtr-12nxowyz-mod8-rg"
