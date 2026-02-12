@@ -2,7 +2,7 @@ resource "azurerm_container_registry" "acr" {
   name                = var.name
   resource_group_name = var.rg_name
   location            = var.location
-  sku                 = var.sku
+  sku                 = "Standard"
   admin_enabled       = true
   tags                = var.tags
 }
@@ -13,7 +13,7 @@ resource "azurerm_container_registry_task" "build_task" {
 
   docker_step {
     dockerfile_path      = "task08/application/Dockerfile"
-    context_path         = "https://github.com/WarLock54/DevOps#main" # Kendi reponuz
+    context_path         = "https://github.com/WarLock54/DevOps#main:task08/application" # Kendi reponuz
     context_access_token = var.git_pat
     image_names          = ["${var.image_name}:latest"]
   }
