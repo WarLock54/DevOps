@@ -12,7 +12,7 @@ resource "azurerm_container_registry_task" "build_task" {
   platform { os = "Linux" }
 
   docker_step {
-    dockerfile_path      = "task08/application/Dockerfile"
+    dockerfile_path      = "Dockerfile"
     context_path         = "https://github.com/WarLock54/DevOps#main:task08/application"
     context_access_token = var.git_pat
     image_names          = ["${var.image_name}:latest"]
