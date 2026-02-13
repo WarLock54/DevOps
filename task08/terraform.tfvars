@@ -11,7 +11,7 @@ redis_primary_key = "redis-primary-key"
 keyvault_sku  = "standard"
 keyvault_name = "cmtr-12nxowyz-mod8-kv"
 # ACR
-acr_sku    = "Standard"
+acr_sku    = "basic"
 image_name = "cmtr-12nxowyz-mod8-app"
 acr_name   = "cmtr12nxowyzmod8cr"
 # ACI
@@ -20,8 +20,8 @@ aci_name = "cmtr-12nxowyz-mod8-ci"
 # AKS
 aks_node_pool_name      = "systempool"
 aks_node_pool_count     = 1
-aks_node_pool_size      = "standard_d2s_v6"
-aks_node_pool_disk_type = "Managed"
+aks_node_pool_size      = "Standard_D2ads_v6"
+aks_node_pool_disk_type = "Ephemeral"
 location                = "francecentral"
 aks_name                = "cmtr-12nxowyz-mod8-aks"
 
