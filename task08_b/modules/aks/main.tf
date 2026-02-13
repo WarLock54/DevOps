@@ -23,10 +23,11 @@ resource "azurerm_kubernetes_cluster" "aks" {
 }
 
 resource "azurerm_role_assignment" "aks_acr" {
-  scope                = var.acr_id
-  role_definition_name = "AcrPull"
-  principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
-  principal_type       = "ServicePrincipal"
+  scope                            = var.acr_id
+  role_definition_name             = "AcrPull"
+  principal_id                     = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  principal_type                   = "ServicePrincipal"
+  skip_service_principal_aad_check = true # Replikasyon gecikmesini tamamen baypas eder
 }
 
 resource "azurerm_key_vault_access_policy" "aks_kv" {
