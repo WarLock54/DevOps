@@ -18,7 +18,7 @@ acr_name   = "cmtr12nxowyzmod8cr"
 aci_sku  = "Standard"
 aci_name = "cmtr-12nxowyz-mod8-ci"
 # AKS
-aks_node_pool_name      = "systempool"
+aks_node_pool_name      = "system"
 aks_node_pool_count     = 1
 aks_node_pool_size      = "Standard_D2ads_v6"
 aks_node_pool_disk_type = "Ephemeral"
