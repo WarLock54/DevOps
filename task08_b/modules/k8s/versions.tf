@@ -1,11 +1,11 @@
 terraform {
   required_providers {
+    kubectl = {
+      source  = "alekc/kubectl" # Task gereksinimi: alekc/kubectl
+      version = ">= 2.0.0"
+    }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.25"
-    }
-    kubectl = {
-      source  = "alekc/kubectl"
       version = "~> 2.0"
     }
   }

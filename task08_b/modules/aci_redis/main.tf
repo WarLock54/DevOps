@@ -1,6 +1,7 @@
 resource "random_password" "redis" {
-  length  = 16
-  special = true
+  length           = 16
+  special          = true
+  override_special = "_%@"
 }
 
 resource "azurerm_container_group" "redis" {
@@ -14,7 +15,7 @@ resource "azurerm_container_group" "redis" {
 
   container {
     name   = "redis"
-    image  = "mcr.microsoft.com/oss/bitnami/redis:7.0"
+    image  = "mcr.microsoft.com/mirror/docker/library/redis:latest"
     cpu    = "1.0"
     memory = "1.5"
 

@@ -78,16 +78,19 @@ module "aca" {
   kv_redis_host_url     = module.aci_redis.redis_host_secret_id
   kv_redis_password_url = module.aci_redis.redis_password_secret_id
   tags                  = local.common_tags
+  depends_on            = [module.acr, module.aci_redis, module.keyvault]
 }
 
 module "k8s" {
   source = "./modules/k8s"
   providers = {
-    kubectl = kubectl
+    kubectl    = kubectl
+    kubernetes = kubernetes
   }
   kv_name                = local.keyvault_name
   tenant_id              = data.azurerm_client_config.current.tenant_id
   aks_identity_client_id = module.aks.aks_identity_client_id
   acr_login_server       = module.acr.login_server
   image_name             = var.image_name
+  depends_on             = [module.acr, module.aci_redis, module.aks]
 }

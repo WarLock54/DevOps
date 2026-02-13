@@ -26,12 +26,12 @@ resource "azurerm_role_assignment" "aks_acr" {
   scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_kubernetes_cluster.aks.kubelet_identity[0].object_id
+  principal_type       = "ServicePrincipal"
 }
 
 resource "azurerm_key_vault_access_policy" "aks_kv" {
-  key_vault_id = var.keyvault_id
-  tenant_id    = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
-  object_id    = azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0].object_id
-
-  secret_permissions = ["Get"]
+  key_vault_id       = var.keyvault_id
+  tenant_id          = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
+  object_id          = azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0].object_id
+  secret_permissions = ["Get", "List"]
 }
