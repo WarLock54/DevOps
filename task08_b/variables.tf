@@ -10,7 +10,7 @@ variable "student_email" {
 
 variable "location" {
   type        = string
-  default     = "West Europe"
+  default     = "francecentral"
   description = "The Azure region where resources will be created"
 }
 
@@ -67,10 +67,7 @@ variable "redis_aci_sku" {
   type        = string
   description = "The SKU for the Redis instance in Azure Container Instances"
 }
-variable "tenant_id" {
-  type        = string
-  description = "The Azure Tenant ID"
-}
+
 variable "git_pat" {
   type        = string
   description = "Git Personal Access Token for accessing private repositories"

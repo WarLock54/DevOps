@@ -14,7 +14,7 @@ resource "azurerm_container_group" "redis" {
 
   container {
     name   = "redis"
-    image  = "mcr.microsoft.com/oss/bitnami/redis:latest"
+    image  = "mcr.microsoft.com/oss/bitnami/redis:7.0"
     cpu    = "1.0"
     memory = "1.5"
 
@@ -23,7 +23,11 @@ resource "azurerm_container_group" "redis" {
       protocol = "TCP"
     }
 
-    commands = ["redis-server", "--protected-mode", "no", "--requirepass", random_password.redis.result]
+    commands = [
+      "redis-server", 
+      "--protected-mode", "no", 
+      "--requirepass", random_password.redis.result
+    ]
   }
 }
 

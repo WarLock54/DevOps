@@ -12,6 +12,6 @@ locals {
   aks_name       = "${local.name_prefix}-aks"
 
   common_tags = {
-    Creator = var.student_email
+    Creator = "onur_atalik@epam.com"
   }
 }

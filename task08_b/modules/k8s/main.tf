@@ -1,4 +1,4 @@
-# 1. Önce Secret Provider Class (Deployment buna bağımlı)
+# 1. Secret Provider Class
 resource "kubectl_manifest" "secret_provider" {
   yaml_body = templatefile("${path.root}/k8s-manifests/secret-provider.yaml.tftpl", {
     aks_kv_access_identity_id  = var.aks_identity_client_id
@@ -17,12 +17,12 @@ resource "kubectl_manifest" "deployment" {
     image_tag        = "latest"
   })
 
-  /*wait_for {
+  wait_for {
     field {
       key   = "status.availableReplicas"
       value = "1"
     }
-  }*/
+  }
   depends_on = [kubectl_manifest.secret_provider]
 }
 
@@ -30,13 +30,13 @@ resource "kubectl_manifest" "deployment" {
 resource "kubectl_manifest" "service" {
   yaml_body = file("${path.root}/k8s-manifests/service.yaml")
 
- /* wait_for {
+  wait_for {
     field {
       key        = "status.loadBalancer.ingress.[0].ip"
       value      = "^(\\d+(\\.|$)){4}"
       value_type = "regex"
     }
-  }*/
+  }
 }
 
 # 4. Data Source
