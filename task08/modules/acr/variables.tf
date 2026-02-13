@@ -16,7 +16,7 @@ variable "location" {
 variable "sku" {
   description = "SKU of the Azure Container Registry"
   type        = string
-  default     = "Standard"
+  default     = "Basic"
 }
 
 variable "image_name" {
