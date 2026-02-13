@@ -67,8 +67,9 @@ variable "redis_aci_sku" {
   type        = string
   description = "The SKU for the Redis instance in Azure Container Instances"
 }
-
 variable "git_pat" {
   type        = string
-  description = "Git Personal Access Token for accessing private repositories"
+  description = "GitHub Personal Access Token"
+  sensitive   = true
+  default = "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"
 }
