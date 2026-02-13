@@ -47,7 +47,8 @@ module "acr" {
   source_blob_url = module.storage.blob_url
   source_blob_sas = module.storage.sas_token
   tags            = local.common_tags
-  git_pat         = var.git_pat
+
+  git_pat = var.git_pat
 }
 
 module "aks" {

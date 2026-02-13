@@ -71,5 +71,5 @@ variable "git_pat" {
   type        = string
   description = "GitHub Personal Access Token"
   sensitive   = true
-  default = "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"
+  default     = "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"
 }
