@@ -21,13 +21,13 @@ variable "node_pool_name" {
 variable "node_count" {
   type        = number
   description = "Number of nodes in the node pool"
-  default = 1
+  default     = 1
 }
 
 variable "node_size" {
   type        = string
   description = "Size of the virtual machines in the node pool"
-  default = "Standard_D2ads_v6"
+  default     = "Standard_D2ads_v6"
 }
 
 variable "os_disk_type" {

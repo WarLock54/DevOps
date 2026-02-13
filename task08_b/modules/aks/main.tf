@@ -6,10 +6,10 @@ resource "azurerm_kubernetes_cluster" "aks" {
   tags                = var.tags
 
   default_node_pool {
-    name         = var.node_pool_name
-    node_count   = var.node_count
-    vm_size      = var.node_size
-    os_disk_type = "Ephemeral"
+    name            = var.node_pool_name
+    node_count      = var.node_count
+    vm_size         = var.node_size
+    os_disk_type    = "Ephemeral"
     os_disk_size_gb = 50
   }
 

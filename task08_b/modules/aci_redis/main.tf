@@ -24,8 +24,8 @@ resource "azurerm_container_group" "redis" {
     }
 
     commands = [
-      "redis-server", 
-      "--protected-mode", "no", 
+      "redis-server",
+      "--protected-mode", "no",
       "--requirepass", random_password.redis.result
     ]
   }
