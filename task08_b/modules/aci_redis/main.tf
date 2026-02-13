@@ -15,7 +15,7 @@ resource "azurerm_container_group" "redis" {
 
   container {
     name   = "redis"
-    image  = "mcr.microsoft.com/oss/bitnami/redis:7.0"
+    image  = "mcr.microsoft.com/cbl-mariner/base/redis:6.2"
     cpu    = "1.0"
     memory = "1.5"
 
