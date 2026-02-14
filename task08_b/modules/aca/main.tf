@@ -48,13 +48,13 @@ resource "azurerm_container_app" "app" {
 
   secret {
     name                = "redis-url"
-    key_vault_secret_id = var.kv_redis_host_url
+    key_vault_secret_id = "${var.keyvault_id}/secrets/redis-hostname"
     identity            = azurerm_user_assigned_identity.aca_identity.id
   }
 
   secret {
     name                = "redis-key"
-    key_vault_secret_id = var.kv_redis_password_url
+    key_vault_secret_id = "${var.keyvault_id}/secrets/redis-password"
     identity            = azurerm_user_assigned_identity.aca_identity.id
   }
 

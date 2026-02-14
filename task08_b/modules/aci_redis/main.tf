@@ -33,13 +33,13 @@ resource "azurerm_container_group" "redis" {
 }
 
 resource "azurerm_key_vault_secret" "redis_pwd" {
-  name         = "redisprimarykey"
+  name         = "redis-password"
   value        = random_password.redis.result
   key_vault_id = var.keyvault_id
 }
 
 resource "azurerm_key_vault_secret" "redis_host" {
-  name         = "redishostname"
+  name         = "redis-hostname"
   value        = azurerm_container_group.redis.fqdn
   key_vault_id = var.keyvault_id
 }

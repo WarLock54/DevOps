@@ -3,8 +3,8 @@ resource "kubectl_manifest" "secret_provider" {
   yaml_body = templatefile("${path.root}/k8s-manifests/secret-provider.yaml.tftpl", {
     aks_kv_access_identity_id  = var.aks_identity_client_id
     kv_name                    = var.kv_name
-    redis_url_secret_name      = "redishostname"
-    redis_password_secret_name = "redisprimarykey"
+    redis_url_secret_name      = "redis-hostname"
+    redis_password_secret_name = "redis-password"
     tenant_id                  = var.tenant_id
   })
 }
