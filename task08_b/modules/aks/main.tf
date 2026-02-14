@@ -34,5 +34,5 @@ resource "azurerm_key_vault_access_policy" "aks_kv" {
   key_vault_id       = var.keyvault_id
   tenant_id          = azurerm_kubernetes_cluster.aks.identity[0].tenant_id
   object_id          = azurerm_kubernetes_cluster.aks.key_vault_secrets_provider[0].secret_identity[0].object_id
-  secret_permissions = ["Get", "List"]
+  secret_permissions = ["Get", "List", "Set", "Delete", "Purge"]
 }

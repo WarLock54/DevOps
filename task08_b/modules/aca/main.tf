@@ -8,13 +8,14 @@ resource "azurerm_key_vault_access_policy" "aca_kv_policy" {
   key_vault_id       = var.keyvault_id
   tenant_id          = azurerm_user_assigned_identity.aca_identity.tenant_id
   object_id          = azurerm_user_assigned_identity.aca_identity.principal_id
-  secret_permissions = ["Get", "List"]
+  secret_permissions = ["Get", "List", "Set", "Delete", "Purge"]
 }
 
 resource "azurerm_role_assignment" "aca_acr_pull" {
   scope                = var.acr_id
   role_definition_name = "AcrPull"
   principal_id         = azurerm_user_assigned_identity.aca_identity.principal_id
+  skip_service_principal_aad_check = true
 }
 
 resource "azurerm_container_app_environment" "main" {
