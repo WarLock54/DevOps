@@ -33,7 +33,7 @@ resource "azurerm_firewall" "afw" {
 
 # 1. NAT Rule Collection (Inbound NGINX Access)
 resource "azurerm_firewall_nat_rule_collection" "nat" {
-  name                = "nat-collection"
+  name                = "nat-${var.unique_id}"
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 100
@@ -52,7 +52,7 @@ resource "azurerm_firewall_nat_rule_collection" "nat" {
 
 # 2. Network Rule Collection (Dynamic Block Kullanımı)
 resource "azurerm_firewall_network_rule_collection" "net" {
-  name                = "net-collection"
+  name                = "net-${var.unique_id}"
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 200
@@ -72,7 +72,7 @@ resource "azurerm_firewall_network_rule_collection" "net" {
 
 # 3. Application Rule Collection
 resource "azurerm_firewall_application_rule_collection" "app" {
-  name                = "app-collection"
+  name                = "app-${var.unique_id}"
   azure_firewall_name = azurerm_firewall.afw.name
   resource_group_name = var.rg_name
   priority            = 300
