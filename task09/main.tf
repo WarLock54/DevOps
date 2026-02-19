@@ -1,13 +1,9 @@
-resource "azurerm_resource_group" "rg" {
-  name     = var.rg_name
-  location = var.location
-}
 module "azure_firewall" {
   source = "./modules/afw"
 
   unique_id   = var.unique_id
-  rg_name     = azurerm_resource_group.rg.name
-  location    = azurerm_resource_group.rg.location
+  location    = var.location
+  rg_name     = var.rg_name
   vnet_name   = var.vnet_name
   subnet_name = var.subnet_name
   aks_lb_ip   = var.aks_loadbalancer_ip
