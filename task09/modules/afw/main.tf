@@ -104,9 +104,9 @@ resource "azurerm_route_table" "rt" {
 }
 
 data "azurerm_subnet" "aks_snet" {
-  name                 = var.subnet_name # tfvars'ta "aks-snet" olmalı
-  virtual_network_name = var.vnet_name   # tfvars'ta "cmtr-12nxowyz-mod9-vnet" olmalı
-  resource_group_name  = var.rg_name     # tfvars'ta "cmtr-12nxowyz-mod9-rg" olmalı
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.rg_name
 }
 
 resource "azurerm_subnet_route_table_association" "assoc" {
