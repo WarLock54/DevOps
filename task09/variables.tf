@@ -22,19 +22,3 @@ variable "aks_loadbalancer_ip" {
   type        = string
   description = "AKS Load Balancer IP address"
 }
-variable "vnet_space" {
-  type        = string
-  description = "Address space for the virtual network"
-}
-variable "subnet_space" {
-  type        = string
-  description = "Address space for the subnet"
-}
-variable "AKS_CLUSTER_NAME" {
-  type        = string
-  description = "AKS Cluster name"
-}
-variable "PUBLIC_IP_NAME" {
-  type        = string
-  description = "Public IP name for AKS Load Balancer"
-}
