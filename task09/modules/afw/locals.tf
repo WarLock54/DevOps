@@ -1,5 +1,4 @@
 locals {
-  # AKS subneti (10.0.0.0/24) ile çakışmamalı
   afw_snet_prefix = ["10.0.100.0/24"]
 
   network_rules = [
