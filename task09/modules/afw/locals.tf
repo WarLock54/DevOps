@@ -3,6 +3,13 @@ locals {
 
   network_rules = [
     {
+      name                  = "allow-http-all" # Bu kural eksik olabilir
+      source_addresses      = ["*"]
+      destination_ports     = ["80"]
+      destination_addresses = ["*"]
+      protocols             = ["TCP"]
+    },
+    {
       name                  = "allow-aks-management"
       source_addresses      = ["*"]
       destination_ports     = ["443", "9000"]
