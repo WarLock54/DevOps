@@ -1,5 +1,5 @@
 unique_id = "cmtr-12nxowyz-mod9"
-location  = "westeurope"
+location  = "westus2"
 rg_name   = "cmtr-12nxowyz-mod9-rg"
 vnet_name = "cmtr-12nxowyz-mod9-vnet"
 
