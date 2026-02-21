@@ -5,4 +5,4 @@ vnet_name = "cmtr-12nxowyz-mod9-vnet"
 
 subnet_name = "aks-snet"
 
-aks_loadbalancer_ip = "4.149.131.144"
+aks_loadbalancer_ip = " 20.76.168.187"
