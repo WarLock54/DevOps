@@ -5,13 +5,6 @@ resource "azurerm_subnet" "afw_snet" {
   address_prefixes     = local.afw_snet_prefix
 }
 
-resource "azurerm_subnet" "aks_snet" {
-  name                 = var.subnet_name
-  resource_group_name  = var.rg_name
-  virtual_network_name = var.vnet_name
-  address_prefixes     = ["10.0.0.0/24"]
-}
-
 resource "azurerm_public_ip" "afw_pip" {
   name                = var.pip_name
   location            = var.location
@@ -131,7 +124,13 @@ resource "azurerm_route_table" "rt" {
 }
 
 
+data "azurerm_subnet" "aks_snet" {
+  name                 = var.subnet_name
+  virtual_network_name = var.vnet_name
+  resource_group_name  = var.rg_name
+}
+
 resource "azurerm_subnet_route_table_association" "assoc" {
-  subnet_id      = azurerm_subnet.aks_snet.id
+  subnet_id      = data.azurerm_subnet.aks_snet.id
   route_table_id = azurerm_route_table.rt.id
 }
