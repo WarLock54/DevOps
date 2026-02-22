@@ -38,3 +38,7 @@ variable "snet_name" {
   type        = string
   description = "Subnet name for Azure Firewall (must be 'AzureFirewallSubnet')"
 }
+variable "AKS_CLUSTER_NAME" {
+  type        = string
+  description = "Name of the AKS cluster"
+}

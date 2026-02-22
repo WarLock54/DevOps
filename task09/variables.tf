@@ -6,6 +6,10 @@ variable "location" {
   type        = string
   description = "Azure region for the resources"
 }
+variable "AKS_CLUSTER_NAME" {
+  type        = string
+  description = "Name of the AKS cluster"
+}
 variable "rg_name" {
   type        = string
   description = "Resource group name"

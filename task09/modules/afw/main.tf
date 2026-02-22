@@ -30,7 +30,10 @@ resource "azurerm_firewall" "afw" {
     public_ip_address_id = azurerm_public_ip.afw_pip.id
   }
 }
-
+data "azurerm_lb" "aks_lb" {
+  name                = "kubernetes-internal"
+  resource_group_name = "MC_${var.rg_name}_${var.AKS_CLUSTER_NAME}_${var.location}"
+}
 resource "azurerm_firewall_nat_rule_collection" "nat" {
   name                = "nat-${var.unique_id}"
   azure_firewall_name = azurerm_firewall.afw.name
@@ -43,9 +46,11 @@ resource "azurerm_firewall_nat_rule_collection" "nat" {
     source_addresses      = ["*"]
     destination_addresses = [azurerm_public_ip.afw_pip.ip_address]
     destination_ports     = ["80"]
-    translated_address    = var.aks_lb_ip
-    translated_port       = "80"
-    protocols             = ["TCP"]
+
+    # Statik veya Data source'tan gelen Private IP
+    translated_address = data.azurerm_lb.aks_lb.private_ip_address
+    translated_port    = "80"
+    protocols          = ["TCP"]
   }
 }
 
