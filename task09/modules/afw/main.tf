@@ -30,10 +30,6 @@ resource "azurerm_firewall" "afw" {
     public_ip_address_id = azurerm_public_ip.afw_pip.id
   }
 }
-data "azurerm_lb" "aks_lb" {
-  name                = "kubernetes-internal"
-  resource_group_name = "MC_${var.rg_name}_${var.AKS_CLUSTER_NAME}_${var.location}"
-}
 resource "azurerm_firewall_nat_rule_collection" "nat" {
   name                = "nat-${var.unique_id}"
   azure_firewall_name = azurerm_firewall.afw.name
@@ -48,7 +44,7 @@ resource "azurerm_firewall_nat_rule_collection" "nat" {
     destination_ports     = ["80"]
 
     # Statik veya Data source'tan gelen Private IP
-    translated_address = data.azurerm_lb.aks_lb.private_ip_address
+    translated_address = var.aks_lb_ip
     translated_port    = "80"
     protocols          = ["TCP"]
   }
@@ -71,6 +67,7 @@ resource "azurerm_firewall_network_rule_collection" "net" {
       protocols             = rule.value.protocols
     }
   }
+  depends_on = [azurerm_firewall.afw]
 }
 
 resource "azurerm_firewall_application_rule_collection" "app" {
@@ -89,8 +86,30 @@ resource "azurerm_firewall_application_rule_collection" "app" {
       type = "Https"
     }
   }
+  depends_on = [azurerm_firewall_network_rule_collection.net] # Sırayla oluşturması kilitlenmeleri önleyebilir
+}
+resource "azurerm_network_security_rule" "allow_fw_to_lb" {
+  name                        = "AllowHTTPFromFirewall"
+  priority                    = 400
+  direction                   = "Inbound"
+  access                      = "Allow"
+  protocol                    = "Tcp"
+  source_port_range           = "*"
+  destination_port_range      = "80"
+  source_address_prefix       = azurerm_public_ip.afw_pip.ip_address
+  destination_address_prefix  = "10.0.0.0/24" # AKS Subnet aralığı veya LB IP'si
+  resource_group_name         = data.azurerm_kubernetes_cluster.aks.node_resource_group
+  network_security_group_name = data.azurerm_resources.aks_nsg.resources[0].name
+}
+data "azurerm_kubernetes_cluster" "aks" {
+  name                = "cmtr-12nxowyz-mod9-aks"
+  resource_group_name = "cmtr-12nxowyz-mod9-rg"
 }
 
+data "azurerm_resources" "aks_nsg" {
+  resource_group_name = data.azurerm_kubernetes_cluster.aks.node_resource_group
+  type                = "Microsoft.Network/networkSecurityGroups"
+}
 resource "azurerm_route_table" "rt" {
   name                = var.rt_name
   location            = var.location
@@ -110,7 +129,7 @@ data "azurerm_subnet" "aks_snet" {
   resource_group_name  = var.rg_name
 }
 
-resource "azurerm_subnet_route_table_association" "assoc" {
-  subnet_id      = data.azurerm_subnet.aks_snet.id
-  route_table_id = azurerm_route_table.rt.id
-}
+#resource "azurerm_subnet_route_table_association" "assoc" {
+# subnet_id      = data.azurerm_subnet.aks_snet.id
+#route_table_id = azurerm_route_table.rt.id
+#}
