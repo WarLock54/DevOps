@@ -26,3 +26,7 @@ variable "aks_loadbalancer_ip" {
   type        = string
   description = "AKS Load Balancer IP address"
 }
+variable "vnet_address_space" {
+  type        = string
+  description = "Virtual network address space"
+}

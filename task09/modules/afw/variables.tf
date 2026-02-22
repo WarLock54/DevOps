@@ -42,3 +42,7 @@ variable "AKS_CLUSTER_NAME" {
   type        = string
   description = "Name of the AKS cluster"
 }
+variable "vnet_address_space" {
+  type        = string
+  description = "Virtual network address space"
+}

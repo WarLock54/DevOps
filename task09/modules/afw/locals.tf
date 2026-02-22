@@ -1,5 +1,5 @@
 locals {
-  afw_snet_prefix = ["10.0.100.0/24"]
+  afw_snet_prefix = [cidrsubnet(var.vnet_address_space, 8, 100)]
 
   network_rules = [
     {
@@ -12,7 +12,7 @@ locals {
     {
       name                  = "aks-service-tunnels"
       source_addresses      = ["*"]
-      destination_ports     = ["9000", "1194"] # AKS tünel portları
+      destination_ports     = ["9000", "1194"]
       destination_addresses = ["AzureCloud"]
       protocols             = ["TCP", "UDP"]
     },

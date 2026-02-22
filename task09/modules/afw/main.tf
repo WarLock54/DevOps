@@ -5,6 +5,13 @@ resource "azurerm_subnet" "afw_snet" {
   address_prefixes     = local.afw_snet_prefix
 }
 
+resource "azurerm_subnet" "aks_snet" {
+  name                 = var.subnet_name
+  resource_group_name  = var.rg_name
+  virtual_network_name = var.vnet_name
+  address_prefixes     = ["10.0.0.0/24"]
+}
+
 resource "azurerm_public_ip" "afw_pip" {
   name                = var.pip_name
   location            = var.location
@@ -89,7 +96,7 @@ resource "azurerm_firewall_application_rule_collection" "app" {
   depends_on = [azurerm_firewall_network_rule_collection.net] # Sırayla oluşturması kilitlenmeleri önleyebilir
 }
 resource "azurerm_network_security_rule" "allow_fw_to_lb" {
-  name                        = "AllowHTTPFromFirewall"
+  name                        = "allow-http-from-firewall-${var.unique_id}"
   priority                    = 400
   direction                   = "Inbound"
   access                      = "Allow"
@@ -97,13 +104,13 @@ resource "azurerm_network_security_rule" "allow_fw_to_lb" {
   source_port_range           = "*"
   destination_port_range      = "80"
   source_address_prefix       = azurerm_public_ip.afw_pip.ip_address
-  destination_address_prefix  = "10.0.0.0/24" # AKS Subnet aralığı veya LB IP'si
+  destination_address_prefix  = cidrsubnet(var.vnet_address_space, 8, 0)
   resource_group_name         = data.azurerm_kubernetes_cluster.aks.node_resource_group
   network_security_group_name = data.azurerm_resources.aks_nsg.resources[0].name
 }
 data "azurerm_kubernetes_cluster" "aks" {
-  name                = "cmtr-12nxowyz-mod9-aks"
-  resource_group_name = "cmtr-12nxowyz-mod9-rg"
+  name                = var.AKS_CLUSTER_NAME
+  resource_group_name = var.rg_name
 }
 
 data "azurerm_resources" "aks_nsg" {
@@ -123,13 +130,8 @@ resource "azurerm_route_table" "rt" {
   }
 }
 
-data "azurerm_subnet" "aks_snet" {
-  name                 = var.subnet_name
-  virtual_network_name = var.vnet_name
-  resource_group_name  = var.rg_name
-}
 
-#resource "azurerm_subnet_route_table_association" "assoc" {
-# subnet_id      = data.azurerm_subnet.aks_snet.id
-#route_table_id = azurerm_route_table.rt.id
-#}
+resource "azurerm_subnet_route_table_association" "assoc" {
+  subnet_id      = azurerm_subnet.aks_snet.id
+  route_table_id = azurerm_route_table.rt.id
+}
